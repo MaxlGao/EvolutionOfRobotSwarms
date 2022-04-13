@@ -92,7 +92,7 @@ while time <= Period
             Robot(i).Condition.Has_Food = true;
             Carrying(i) = Target; % Carrying(5) = 4 means that robot 5 is carrying item number 4.
             if Robot(i).Condition.On_Source
-                XY_Items = [XY_Items [rand*(Dims(4)) + sum(Dims(1:3));rand*Width]];
+                XY_Items = [XY_Items [rand*(Dims(4)) + sum(Dims(1:3));rand*Dims(5)]];
             end
         end
         if Carrying(i) ~= 0
@@ -125,7 +125,7 @@ while time <= Period
         if XY_Items(1,i) > (sum(Dims(1:2)) - rand - 1) &&... % stops 1-2 m from the ramp
            XY_Items(1,i) < sum(Dims(1:3)) &&...
            all(Carrying ~= i)
-            XY_Items(1,i) = XY_Items(1,i) - V_Item;
+            XY_Items(1,i) = XY_Items(1,i) - Rates(4);
         end
     end
     plot(XY_Items(1,:),XY_Items(2,:),'xr','MarkerSize',10)
