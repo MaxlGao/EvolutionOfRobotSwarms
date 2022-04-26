@@ -4,7 +4,7 @@ clear
 clf
 
 % Basic settings
-Period   = 5000;
+Period   = 1000;
 N_Items  = 5; % N items always in the source.
 N_Robots = 4;
 
@@ -65,6 +65,8 @@ end
 %% Main Loop
 %hold on
 %rectangle('Position',[0,0,sum(Dims(1:4)),2])
+V = VideoWriter('Animation.gif');
+open(V);
 while time <= Period
     hold off
     clf
@@ -133,12 +135,18 @@ while time <= Period
     text(4,1.9,txt)
     txt = ['Time: ', num2str(time)];
     text(4,1.83,txt)
-     txt = ['Carrying: ', num2str(Carrying)];
-     text(6,1.9,txt)
+    %txt = ['Carrying: ', num2str(Carrying)];
+    %text(6,1.9,txt)
     %pause(0.1)
     %if time>=150 % uncomment this if statement to skip the first part
         drawnow % uncomment this to view the animation.
     %end
+    F = getframe(gcf);
+    writeVideo(V,F);
+    if mod(time,200)==0
+        saveas(gcf,[pwd '\Pics\' sprintf('%04d',time) '.png'])
+    end
     time = time + 1;
 end
+close(V)
 plot(XData',YData')

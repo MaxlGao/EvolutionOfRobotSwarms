@@ -7,6 +7,8 @@ clf
 Period   = 5000;
 N_Items  = 5; % N items always in the source.
 N_Robots = 4;
+N_Collectors = 0;
+N_Droppers = -9999;
 
 % Speed Settings: Going up the slope is much slower than going down.
 %         Nominal, Up Slope, Down Slope, V_Item
@@ -50,11 +52,11 @@ for i = 1:N_Robots
     Robot(i).Behavior = "Random_Walk";
 end
 % Robot Job Initialization
-for i = 1:N_Robots/2
+for i = 1:N_Collectors
     Robot(i).Job = "Collector";
     Robot(i).Condition.Stay_Down = true;
 end
-for i = (N_Robots/2+1):N_Robots
+for i = N_Collectors+1:N_Collectors + N_Droppers
     Robot(i).Job = "Dropper";
     Robot(i).Condition.Stay_Up = true;
 end
@@ -120,7 +122,11 @@ while time <= Period
     end
     time = time + 1;
 end
+subplot(2,1,1)
 plot([1:Period],XData'/sum(Dims(1:4)))
-figure(2)
+ylabel('Robot X-Coordinate')
+subplot(2,1,2)
 plot(Cache_Size)
+ylabel('Cache Size')
+xlabel('Time')
 fprintf("%3.0f Items were delivered in %4.0f seconds by %2.0f robots\n", [Transported, Period, N_Robots])
